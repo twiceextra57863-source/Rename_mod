@@ -122,6 +122,17 @@ git log --oneline -n 5
 git pull
 ```
 
+## PR nahi ho raha? (Fix)
+Agar changes hone ke baad pull request create nahi ho raha, ye steps follow karo:
+
+```bash
+git remote -v
+git branch --show-current
+./scripts/create_pr.sh main "LagKill update"
+```
+
+Agar `gh` CLI installed/authenticated nahi hai to script push karke manual compare URL dega.
+
 ## Repo pe files kyu nahi dikh rahi?
 Agar yaha changes huye hain lekin tumhare GitHub repo me nahi dikh rahe, to most common reason:
 - `origin` remote set nahi hai, ya

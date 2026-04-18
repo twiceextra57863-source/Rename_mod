@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.1 - PR creation helper script
+- Added `scripts/create_pr.sh` to automate push + PR creation via GitHub CLI.
+- Added README troubleshooting section for PR creation failures.
+
 ## 0.9.0 - Persistent visual config + category dashboard tabs
 - Added persistent visual settings file (`config/lagkill_visual.properties`).
 - `LagKillVisualConfig` now supports bootstrap/load/save persistence.
