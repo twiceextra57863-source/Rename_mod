@@ -41,6 +41,7 @@ public final class LagKillConfig {
         true,
         true,
         600,
+        false,
         true,
         true,
         true
@@ -90,9 +91,10 @@ public final class LagKillConfig {
             Boolean.parseBoolean(properties.getProperty("backgroundTaskThrottleEnabled", "true")),
             Boolean.parseBoolean(properties.getProperty("startupFastPathEnabled", "true")),
             parseInt(properties.getProperty("startupFastPathTicks", "600"), 600),
-            Boolean.parseBoolean(properties.getProperty("resourcePackWarmupEnabled", "true")),
+            Boolean.parseBoolean(properties.getProperty("resourcePackWarmupEnabled", "false")),
             Boolean.parseBoolean(properties.getProperty("networkWarmupEnabled", "true")),
-            Boolean.parseBoolean(properties.getProperty("serverPingWarmupEnabled", "true"))
+            Boolean.parseBoolean(properties.getProperty("serverPingWarmupEnabled", "true")),
+            Boolean.parseBoolean(properties.getProperty("aggressiveSafeModeEnabled", "true"))
         );
     }
 
@@ -119,6 +121,7 @@ public final class LagKillConfig {
             properties.setProperty("resourcePackWarmupEnabled", Boolean.toString(state.resourcePackWarmupEnabled()));
             properties.setProperty("networkWarmupEnabled", Boolean.toString(state.networkWarmupEnabled()));
             properties.setProperty("serverPingWarmupEnabled", Boolean.toString(state.serverPingWarmupEnabled()));
+            properties.setProperty("aggressiveSafeModeEnabled", Boolean.toString(state.aggressiveSafeModeEnabled()));
 
             try (OutputStream output = Files.newOutputStream(CONFIG_PATH)) {
                 properties.store(output, "LagKill config");
@@ -171,7 +174,8 @@ public final class LagKillConfig {
         int startupFastPathTicks,
         boolean resourcePackWarmupEnabled,
         boolean networkWarmupEnabled,
-        boolean serverPingWarmupEnabled
+        boolean serverPingWarmupEnabled,
+        boolean aggressiveSafeModeEnabled
     ) {
     }
 }

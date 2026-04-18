@@ -28,6 +28,7 @@ public class LagKillClientMod implements ClientModInitializer {
 
     private RendererAdvisor.BackendMode backendMode = RendererAdvisor.BackendMode.DEFAULT;
     private StartupFastPathController startupFastPathController = new StartupFastPathController(600);
+    private int cachedStartupTicks = 600;
     private boolean startupWarmupDone;
     private final KeyBinding dashboardKey = KeyBindingHelper.registerKeyBinding(
         new KeyBinding("key.lagkill.dashboard", GLFW.GLFW_KEY_F8, "category.lagkill")
@@ -45,7 +46,10 @@ public class LagKillClientMod implements ClientModInitializer {
             ticks++;
 
             LagKillConfig.ConfigState config = LagKillConfig.get();
-            startupFastPathController = new StartupFastPathController(config.startupFastPathTicks());
+            if (config.startupFastPathTicks() != cachedStartupTicks) {
+                cachedStartupTicks = config.startupFastPathTicks();
+                startupFastPathController = new StartupFastPathController(cachedStartupTicks);
+            }
 
             if (LagKillVisualConfig.get().dashboardEnabled()) {
                 while (dashboardKey.wasPressed()) {
@@ -66,9 +70,12 @@ public class LagKillClientMod implements ClientModInitializer {
 
             boolean startupFastPath = config.startupFastPathEnabled() && startupFastPathController.isActive(ticks);
             boolean multiplayer = multiplayerAdvisor.isMultiplayerSession(client);
+            boolean aggressiveSafeMode = config.aggressiveSafeModeEnabled() && frameTimeMonitor.p95Ms() > 45.0;
 
             if (ticks % 40 == 0) {
-                RuntimeProfile profile = chooseProfile(startupFastPath, multiplayer, config);
+                RuntimeProfile profile = aggressiveSafeMode
+                    ? RuntimeProfile.competitive()
+                    : chooseProfile(startupFastPath, multiplayer, config);
                 int adjustedCap = nonVisualLagController.computeFpsCap(
                     frameTimeMonitor.p95Ms(),
                     profile.maxFps(),
@@ -79,17 +86,22 @@ public class LagKillClientMod implements ClientModInitializer {
 
             if (ticks % 200 == 0) {
                 LagKillMod.LOGGER.info(
-                    "LagKill runtime | backend={} startupFastPath={} native={} avg={}ms p95={}ms overload={} visualIntegrity={}",
+                    "LagKill runtime | backend={} startupFastPath={} safeMode={} native={} avg={}ms p95={}ms overload={} visualIntegrity={}",
                     backendMode,
                     startupFastPath,
+                    aggressiveSafeMode,
                     nonVisualLagController.nativeAccelerationEnabled(),
-                    String.format("%.2f", frameTimeMonitor.smoothedMs()),
-                    String.format("%.2f", frameTimeMonitor.p95Ms()),
+                    round2(frameTimeMonitor.smoothedMs()),
+                    round2(frameTimeMonitor.p95Ms()),
                     adaptiveQualityController.overloadTicks(),
                     config.visualIntegrityMode()
                 );
             }
         });
+    }
+
+    private static double round2(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
     private RuntimeProfile chooseProfile(boolean startupFastPath, boolean multiplayer, LagKillConfig.ConfigState config) {

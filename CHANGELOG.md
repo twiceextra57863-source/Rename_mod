@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2 - Anti-regression lag safety tuning
+- Added `aggressiveSafeModeEnabled` config for automatic fallback when p95 frametime is very high.
+- Reduced runtime overhead by removing per-tick `StartupFastPathController` recreation.
+- Changed default `resourcePackWarmupEnabled` to `false` to avoid startup spikes.
+- Added runtime logging refinements and README guidance for high-lag scenarios.
+
 ## 0.9.1 - PR creation helper script
 - Added `scripts/create_pr.sh` to automate push + PR creation via GitHub CLI.
 - Added README troubleshooting section for PR creation failures.

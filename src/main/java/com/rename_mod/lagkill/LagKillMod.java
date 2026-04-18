@@ -15,14 +15,15 @@ public class LagKillMod implements ModInitializer {
     public void onInitialize() {
         LagKillConfig.bootstrap();
         LagKillVisualConfig.bootstrap();
-        LOGGER.info("LagKill initialized. Profile={}, RecordingMode={}, RendererPreference={}, MultiplayerBoost={} target={}fps, VisualIntegrity={}, StartupFastPath={}",
+        LOGGER.info("LagKill initialized. Profile={}, RecordingMode={}, RendererPreference={}, MultiplayerBoost={} target={}fps, VisualIntegrity={}, StartupFastPath={}, SafeMode={}",
             LagKillConfig.get().profile(),
             LagKillConfig.get().recordingModeEnabled(),
             LagKillConfig.get().rendererPreference(),
             LagKillConfig.get().multiplayerBoostEnabled(),
             LagKillConfig.get().multiplayerTargetFps(),
             LagKillConfig.get().visualIntegrityMode(),
-            LagKillConfig.get().startupFastPathEnabled());
+            LagKillConfig.get().startupFastPathEnabled(),
+            LagKillConfig.get().aggressiveSafeModeEnabled());
         LOGGER.info("LagKill native bridge loaded={}", NativeBridge.isLoaded());
     }
 }

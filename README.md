@@ -50,13 +50,21 @@ External tuning file bhi add hai:
 Native library available hone par FPS cap suggestion native C++ path se aata hai.
 Agar native library load nahi hoti to automatic Java fallback continue karta hai.
 
+## Agar mod se lag badh raha ho (important fix)
+Maine safety defaults improve kiye:
+- `resourcePackWarmupEnabled=false` (startup spike avoid)
+- `aggressiveSafeModeEnabled=true` (p95 high hone par auto competitive fallback)
+- Startup controller object churn reduce kiya gaya for lower overhead.
+
+> `0% lag` practical guarantee nahi hoti, lekin safe mode se severe frame spikes auto control me aayenge.
+
 ## Fast launch + faster ping/resource behavior (new)
 Launch ko fast banane ke liye startup fast-path add hai:
 - `startupFastPathEnabled=true`
 - `startupFastPathTicks=600`
 
 Resource pack / ping warmup options:
-- `resourcePackWarmupEnabled=true`
+- `resourcePackWarmupEnabled=false` (default, spike avoid)
 - `networkWarmupEnabled=true`
 - `serverPingWarmupEnabled=true`
 
