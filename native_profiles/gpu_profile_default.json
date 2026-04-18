@@ -1,0 +1,15 @@
+{
+  "profile": "default",
+  "description": "External tuning profile for native FPS suggestion path.",
+  "targets": {
+    "multiplayer_target_fps": 200,
+    "recording_target_fps": 60,
+    "quality_target_fps": 240
+  },
+  "thresholds_ms": {
+    "multiplayer_soft": 24.0,
+    "multiplayer_hard": 32.0,
+    "singleplayer_soft": 28.0,
+    "singleplayer_hard": 38.0
+  }
+}

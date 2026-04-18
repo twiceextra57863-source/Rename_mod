@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.rename_mod.lagkill.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "client.GameRendererMixin",
+    "client.InGameOverlayRendererMixin",
+    "client.MinecraftClientAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
